@@ -1,0 +1,13 @@
+package ec.com.account;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class EseMsaAccountApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
