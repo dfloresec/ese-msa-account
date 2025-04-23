@@ -1,5 +1,6 @@
 package ec.com.account.services.entities;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -23,7 +24,7 @@ public class Account {
 
 	private String number;
 	private String type;
-	private String balance;
+	private BigDecimal balance;
 	private boolean state;
 	private Long idCustomer;
 

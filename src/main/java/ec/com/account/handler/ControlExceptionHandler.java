@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import ec.com.account.exception.InsufficientBalanceException;
 import ec.com.account.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 
@@ -26,5 +27,13 @@ public class ControlExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND.value())
 				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()).body(ex.getMessage());
 	}
+	
+	@ExceptionHandler(InsufficientBalanceException.class)
+	private ResponseEntity<Object> handlerInsufficientBalanceException(InsufficientBalanceException ex) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST.value())
+				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString()).body(ex.getMessage());
+	}
+	
+	
 
 }

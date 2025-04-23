@@ -1,5 +1,7 @@
 package ec.com.account.services.entities;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,6 @@ public class Movement {
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account account;
 
-	private Double valuee;
+	private BigDecimal valuee;
 
 }
