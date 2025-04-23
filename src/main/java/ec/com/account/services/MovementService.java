@@ -1,6 +1,9 @@
 package ec.com.account.services;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -31,7 +34,7 @@ public class MovementService {
 
 		if (movementRequestDto.getValuee().compareTo(BigDecimal.ZERO) < 0) { // Retiro
 			if (account.getBalance().compareTo(movementRequestDto.getValuee().abs()) < 0) {
-				throw new InsufficientBalanceException("Saldo insuficiente");
+				throw new InsufficientBalanceException("Saldo no disponible");
 			}
 			account.setBalance(account.getBalance().subtract(movementRequestDto.getValuee().abs()));
 		} else { // Depósito
@@ -41,35 +44,12 @@ public class MovementService {
 		Movement movement = new Movement();
 		movement.setAccount(account);
 		movement.setValuee(movementRequestDto.getValuee());
+		movement.setCreateDate(LocalDateTime.now());
 		saveMovement(movement);
 
 		return account.getBalance();
 
 	}
-//	
-//
-//@Transactional
-//public String registerMovement(Long accountId, BigDecimal valuee) {
-//Account account = accountRepository.findById(accountId).orElseThrow(() -> new RuntimeException("Account not found"));
-//
-//        if (valuee.compareTo(BigDecimal.ZERO) < 0) { // Retiro
-//            if (account.getBalance().compareTo(valuee.abs()) < 0) {
-//                return "Insufficient balance for withdrawal";
-//            }
-//            account.setBalance(account.getBalance().subtract(valuee.abs()));
-//        } else { // Depósito
-//            account.setBalance(account.getBalance().add(valuee));
-//        }
-//
-//        Movement movement = new Movement();
-//        movement.setAccount(account);
-//        movement.setValuee(valuee);
-//        movementRepository.save(movement);
-//
-//        accountRepository.save(account);
-//
-//        return "Movement registered successfully";
-//    }
 
 	public Movement getMovementById(Long id) {
 		return movementRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movement not found"));
@@ -78,4 +58,10 @@ public class MovementService {
 	public List<Movement> getAllMovements() {
 		return movementRepository.findAll();
 	}
+
+	public List<Movement> getMovementsByAccountId(Long accountId, LocalDate startDate, LocalDate endDate) {
+		return movementRepository.findMovementsByCustomerIdAndDateRange(accountId, startDate.atStartOfDay(),
+				endDate.atTime(LocalTime.MAX));
+	}
+
 }

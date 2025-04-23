@@ -3,6 +3,8 @@ package ec.com.account.services.entities;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,6 +31,7 @@ public class Account {
 	private Long idCustomer;
 
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference
 	private List<Movement> movements;
 
 }
