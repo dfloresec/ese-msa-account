@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ec.com.account.exception.InsufficientBalanceException;
 import ec.com.account.exception.ResourceNotFoundException;
 import ec.com.account.reposotory.MovementRepository;
+import ec.com.account.services.dto.MovementCreateRequestDto;
 import ec.com.account.services.dto.MovementRequestDto;
 import ec.com.account.services.entities.Account;
 import ec.com.account.services.entities.Movement;
@@ -28,7 +29,7 @@ public class MovementService {
 		return movementRepository.save(movement);
 	}
 
-	public BigDecimal registerMovement(MovementRequestDto movementRequestDto) {
+	public MovementCreateRequestDto registerMovement(MovementRequestDto movementRequestDto) {
 
 		Account account = accountService.getAccountById(movementRequestDto.getAccountId());
 
@@ -47,7 +48,8 @@ public class MovementService {
 		movement.setCreateDate(LocalDateTime.now());
 		saveMovement(movement);
 
-		return account.getBalance();
+		String msgString = String.format("El movimiento de $%s fue exitoso. Saldo: %s", movement.getValuee(), account.getBalance());
+		return MovementCreateRequestDto.builder().Id(movement.getId()).message(msgString).build();
 
 	}
 

@@ -1,6 +1,5 @@
 package ec.com.account.controller;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ec.com.account.services.MovementService;
+import ec.com.account.services.dto.MovementCreateRequestDto;
 import ec.com.account.services.dto.MovementRequestDto;
 import ec.com.account.services.entities.Movement;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +25,9 @@ public class MovementControler {
 	private final MovementService service;
 
 	@PostMapping
-	public ResponseEntity<String> createAccount(@RequestBody MovementRequestDto movementRequest) {
-		BigDecimal balance = service.registerMovement(movementRequest);
-		return ResponseEntity.ok(String.format("El movimiento fue registrado, saldo en la cuenta $%s", balance));
+	public ResponseEntity<MovementCreateRequestDto> createAccount(@RequestBody MovementRequestDto movementRequest) {
+		MovementCreateRequestDto response = service.registerMovement(movementRequest);
+		return ResponseEntity.ok(response);
 	}
 
 	@GetMapping
