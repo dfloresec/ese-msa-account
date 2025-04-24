@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ec.com.account.services.MovementService;
+import ec.com.account.services.dto.MovementCreateRequestDto;
 import ec.com.account.services.dto.MovementRequestDto;
 import ec.com.account.services.entities.Movement;
 
@@ -35,13 +36,14 @@ class MovementControlerTest {
 	void testCreateAccount() {
 		MovementRequestDto requestDto = new MovementRequestDto();
 		requestDto.setValuee(new BigDecimal("100.00"));
+		requestDto.setAccountId(500l);
+		when(movementService.registerMovement(requestDto))
+				.thenReturn(MovementCreateRequestDto.builder().Id(500l).message("xxxxx").build());
 
-		when(movementService.registerMovement(requestDto)).thenReturn(new BigDecimal("500.00"));
-
-		ResponseEntity<String> response = movementControler.createAccount(requestDto);
+		ResponseEntity<MovementCreateRequestDto> response = movementControler.createAccount(requestDto);
 
 		assertNotNull(response);
-		assertEquals("El movimiento fue registrado, saldo en la cuenta $500.00", response.getBody());
+		assertEquals(500l, response.getBody().getId());
 		verify(movementService, times(1)).registerMovement(requestDto);
 	}
 

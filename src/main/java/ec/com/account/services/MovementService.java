@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import ec.com.account.exception.InsufficientBalanceException;
 import ec.com.account.exception.ResourceNotFoundException;
@@ -15,10 +16,12 @@ import ec.com.account.services.dto.MovementCreateRequestDto;
 import ec.com.account.services.dto.MovementRequestDto;
 import ec.com.account.services.entities.Account;
 import ec.com.account.services.entities.Movement;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class MovementService {
 
 	private final MovementRepository movementRepository;
@@ -29,7 +32,7 @@ public class MovementService {
 		return movementRepository.save(movement);
 	}
 
-	public MovementCreateRequestDto registerMovement(MovementRequestDto movementRequestDto) {
+	public MovementCreateRequestDto registerMovement(@Valid MovementRequestDto movementRequestDto) {
 
 		Account account = accountService.getAccountById(movementRequestDto.getAccountId());
 

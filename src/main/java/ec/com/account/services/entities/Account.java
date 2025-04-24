@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -24,10 +26,14 @@ public class Account {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "El campo number es requerido")
 	private String number;
+	@NotBlank(message = "El campo type es requerido")
 	private String type;
+	@NotNull(message = "El campo balance es requerido")
 	private BigDecimal balance;
 	private boolean state;
+	@NotNull(message = "El campo idCustomer es requerido")
 	private Long idCustomer;
 
 	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
